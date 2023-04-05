@@ -3,6 +3,11 @@ import json
 import openai
 from flask import Flask, redirect, render_template, request, url_for
 import samples
+import logging
+from opencensus.ext.azure.log_exporter import AzureLogHandler
+
+logger = logging.getLogger(__name__)
+logger.addHandler(AzureLogHandler())
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -15,12 +20,11 @@ def index():
         resources = request.form["resource"]
         prefix = request.form["prefix"]
         cloud = request.form["cloud"]
-        print(generate_prompt(cloud, resources,prefix))
         response = openai.Completion.create(
             model="text-davinci-003",
             prompt=generate_prompt(cloud, resources, prefix),
             max_tokens=1000,
-            temperature=0.6,
+            temperature=0,
         )
         json_response = json.dumps(response.choices[0].text, sort_keys = False, indent = 2)
         return redirect(url_for("index", result=response.choices[0].text))
@@ -30,8 +34,7 @@ def index():
 
 
 def generate_prompt(cloud, resources, prefix):
-    return """Generate sample Terraform code for the given cloud resource using name prefix provided. 
-    Here's two examples, complete the last entry
+    return """
 
 {}
 
@@ -39,6 +42,8 @@ def generate_prompt(cloud, resources, prefix):
 
 {}
 
+Instruction: Given the three examples above, complete the below entry. Generate one complete sample Terraform code to deploy the given cloud resource using name prefix provided. 
+    
 Cloud: {}
 Resource: {}
 Name Prefix: {}

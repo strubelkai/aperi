@@ -90,26 +90,26 @@ def multiple():
     return """
 Cloud: Azure
 Resource: sql, storage
-Name Prefix: phil
+Name Prefix: test
 Terraform: 
-    resource "azurerm_resource_group" "phil" {{
-    name     = "phil-resource-group"
+    resource "azurerm_resource_group" "test" {{
+    name     = "test-resource-group"
     location = "West Europe"
     }}
 
-    resource "azurerm_sql_database" "phil_sql" {{
-    name                         = "phil-sql-database"
-    resource_group_name          = azurerm_resource_group.phil.name
-    server_name                  = azurerm_sql_server.phil_sql.name
+    resource "azurerm_sql_database" "test_sql" {{
+    name                         = "test-sql-database"
+    resource_group_name          = azurerm_resource_group.test.name
+    server_name                  = azurerm_sql_server.test_sql.name
     edition                      = "Basic"
     collation                    = "SQL_Latin1_General_CP1_CI_AS"
     max_size_bytes               = "1073741824"
     }}
 
-    resource "azurerm_storage_account" "phil_storage" {{
-    name                = "philstorage"
-    resource_group_name = azurerm_resource_group.phil.name
-    location            = azurerm_resource_group.phil.location
+    resource "azurerm_storage_account" "test_storage" {{
+    name                = "teststorage"
+    resource_group_name = azurerm_resource_group.test.name
+    location            = azurerm_resource_group.test.location
     account_tier        = "Standard"
     account_replication = "LRS"
     }}
