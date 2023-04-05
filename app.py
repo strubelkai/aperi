@@ -3,11 +3,6 @@ import json
 import openai
 from flask import Flask, redirect, render_template, request, url_for
 import samples
-import logging
-from opencensus.ext.azure.log_exporter import AzureLogHandler
-
-logger = logging.getLogger(__name__)
-logger.addHandler(AzureLogHandler())
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
