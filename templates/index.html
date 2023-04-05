@@ -10,12 +10,15 @@
 
 <body>
   <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
-  <h3>Name my pet</h3>
+  <h3>Generate IaC</h3>
   <form action="/" method="post">
-    <input type="text" name="animal" placeholder="Enter an animal" required />
+    <input type="text" name="resource" placeholder="Enter Azure Resources" required />
+    <input type="text" name="prefix" placeholder="Enter Resource Naming Prefix" required />
     <input type="submit" value="Generate names" />
   </form>
   {% if result %}
-  <div class="result">{{ result }}</div>
+  <div class="result"><pre>
+    {{ result }}
+  </pre></div>
   {% endif %}
 </body>
