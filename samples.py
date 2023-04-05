@@ -1,8 +1,8 @@
 
 def storage_sample():
     return """
-
-Resource: Azure Storage Container
+Cloud: Azure
+Resource: Storage Container
 Name Prefix: kastrube
 Terraform: 
     resource "azurerm_resource_group" "kastrube" {{
@@ -12,8 +12,8 @@ Terraform:
 
     resource "azurerm_storage_account" "kastrube" {{
     name                     = "kastrubestoraccount"
-    resource_group_name      = azurerm_resource_group.example.name
-    location                 = azurerm_resource_group.example.location
+    resource_group_name      = azurerm_resource_group.kastrube.name
+    location                 = azurerm_resource_group.kastrube.location
     account_tier             = "Standard"
     account_replication_type = "LRS"
 
@@ -24,7 +24,7 @@ Terraform:
 
     resource "azurerm_storage_container" "kastrube" {{
     name                  = "vhds"
-    storage_account_name  = azurerm_storage_account.example.name
+    storage_account_name  = azurerm_storage_account.kastrube.name
     container_access_type = "private"
     }}
 
@@ -33,8 +33,8 @@ Terraform:
 
 def cosmos_sample():
     return """
-
-Resource: Azure CosmosDb Account 
+Cloud: Azure
+Resource: CosmosDb Account 
 Name Prefix: phil
 Terraform: 
     resource "azurerm_resource_group" "phil" {{
@@ -44,8 +44,8 @@ Terraform:
 
     resource "azurerm_cosmosdb_account" "db" {{
     name                = "tfex-cosmos-db-3242"
-    location            = azurerm_resource_group.example.location
-    resource_group_name = azurerm_resource_group.example.name
+    location            = azurerm_resource_group.phil.location
+    resource_group_name = azurerm_resource_group.phil.name
     offer_type          = "Standard"
     kind                = "MongoDB"
 
@@ -84,4 +84,33 @@ Terraform:
     }}
     }}
 
+"""
+
+def multiple():
+    return """
+Cloud: Azure
+Resource: sql, storage
+Name Prefix: phil
+Terraform: 
+    resource "azurerm_resource_group" "phil" {{
+    name     = "phil-resource-group"
+    location = "West Europe"
+    }}
+
+    resource "azurerm_sql_database" "phil_sql" {{
+    name                         = "phil-sql-database"
+    resource_group_name          = azurerm_resource_group.phil.name
+    server_name                  = azurerm_sql_server.phil_sql.name
+    edition                      = "Basic"
+    collation                    = "SQL_Latin1_General_CP1_CI_AS"
+    max_size_bytes               = "1073741824"
+    }}
+
+    resource "azurerm_storage_account" "phil_storage" {{
+    name                = "philstorage"
+    resource_group_name = azurerm_resource_group.phil.name
+    location            = azurerm_resource_group.phil.location
+    account_tier        = "Standard"
+    account_replication = "LRS"
+    }}
 """

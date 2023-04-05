@@ -12,7 +12,8 @@
   <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
   <h3>Generate IaC</h3>
   <form action="/" method="post">
-    <input type="text" name="resource" placeholder="Enter Azure Resources" required />
+    <input type="text" name="cloud" placeholder="Enter Cloud (Azure, AWS, GCP)" required />
+    <input type="text" name="resource" placeholder="Enter list of resources" required />
     <input type="text" name="prefix" placeholder="Enter Resource Naming Prefix" required />
     <input type="submit" value="Generate names" />
   </form>

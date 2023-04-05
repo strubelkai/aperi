@@ -12,12 +12,13 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        resource = request.form["resource"]
+        resources = request.form["resource"]
         prefix = request.form["prefix"]
-        print(generate_prompt(resource,prefix))
+        cloud = request.form["cloud"]
+        print(generate_prompt(cloud, resources,prefix))
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(resource, prefix),
+            prompt=generate_prompt(cloud, resources, prefix),
             max_tokens=1000,
             temperature=0.6,
         )
@@ -28,17 +29,24 @@ def index():
     return render_template("index.html", result=result)
 
 
-def generate_prompt(resources, prefix):
-    return """Generate sample Terraform code to deploy cloud resource
+def generate_prompt(cloud, resources, prefix):
+    return """Generate sample Terraform code for the given cloud resource using name prefix provided. 
+    Here's two examples, complete the last entry
 
 {}
+
 {}
 
+{}
+
+Cloud: {}
 Resource: {}
 Name Prefix: {}
 Terraform:""".format(
         samples.storage_sample,
         samples.cosmos_sample,
+        samples.multiple,
+        cloud,
         resources,
-        prefix
+        prefix,
     )
