@@ -31,14 +31,16 @@ def index():
 def generate_prompt(cloud, resources, prefix):
     return """
 
-{}
+Instruction: Generate one single file of Terraform code (.tf) to deploy the given cloud resource using name prefix provided, 
+including provider and resource group blocks
 
 {}
 
 {}
 
-Instruction: Given the three examples above, complete the below entry. Generate one complete sample Terraform code to deploy the given cloud resource using name prefix provided. 
-    
+{}
+
+   
 Cloud: {}
 Resource: {}
 Name Prefix: {}
