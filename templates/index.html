@@ -1,20 +1,66 @@
 <!DOCTYPE html>
 <head>
-  <title>IaC Generator</title>
+  <title>AP Exam Review</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 
 <body>
-  <h3>Generate IaC</h3>
-  <form action="/" method="post">
-    <input type="text" name="cloud" placeholder="Enter Cloud (Azure, AWS, GCP)" required />
-    <input type="text" name="resource" placeholder="Enter list of resources" required />
-    <input type="text" name="prefix" placeholder="Enter Resource Naming Prefix" required />
-    <input type="submit" value="Generate" />
-  </form>
-  {% if result %}
-  <div class="result"><pre>
-    {{ result }}
-  </pre></div>
-  {% endif %}
+  
+  <div class="container text-center">
+    <div class="row mt-3">
+      <h3>AP Physics 1 Exam Review</h3>
+      <form action="/" method="post">
+        <input type="text" name="topic" placeholder="Example: Unit 2.3 Contact Forces" required />
+        <input type="submit" value="Generate" />
+      </form>
+    </div>
+    <div class="row mt-3">
+    <div class="accordion" id="practiceProblem" >
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Question
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#practiceProblem">
+          <div class="accordion-body">
+            {% if question %}          
+              {{ question }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Answer
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#practiceProblem">
+          <div class="accordion-body">
+            {% if answer %}          
+              {{ answer }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Explanation
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#practiceProblem">
+          <div class="accordion-body">
+            {% if explanation %}          
+              {{ explanation }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>

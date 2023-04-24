@@ -1,8 +1,6 @@
 import os
-import json
 import openai
 from flask import Flask, redirect, render_template, request, url_for
-import samples
 
 app = Flask(__name__)
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -12,43 +10,40 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        resources = request.form["resource"]
-        prefix = request.form["prefix"]
-        cloud = request.form["cloud"]
+        topic = request.form["topic"]
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(cloud, resources, prefix),
+            prompt=generatePrompt(topic),
             max_tokens=1000,
             temperature=0,
         )
-        json_response = json.dumps(response.choices[0].text, sort_keys = False, indent = 2)
-        return redirect(url_for("index", result=response.choices[0].text))
+        generatedText = response.choices[0].text
+        question = generatedText
+        answer = ""
+        explanation = ""
+        if "answer" in generatedText.lower():
+            s = generatedText.split("Answer:", 1)
+            question = s[0]
+            answer = s[1]
+            if "explanation" in answer.lower():
+                s = answer.split("Explanation:", 1)
+                answer = s[0]
+                explanation = s[1]
+        return redirect(url_for("index", question=question, answer=answer, explanation=explanation))
 
-    result = request.args.get("result")
-    return render_template("index.html", result=result)
+    question = request.args.get("question")
+    answer = request.args.get("answer")
+    explanation = request.args.get("explanation")
+    return render_template("index.html", question=question, answer=answer, explanation=explanation)
 
 
-def generate_prompt(cloud, resources, prefix):
+def generatePrompt(topic):
     return """
 
-Instruction: Generate one single file of Terraform code (.tf) to deploy the given cloud resource using name prefix provided, 
-including provider and resource group blocks
+Instruction: Give me a question and answer off a past AP Physics 1 algebra based exam to test my knowledge of {}. 
+Provide response in three parts: Question, Answer, and Explanation
 
-{}
 
-{}
-
-{}
-
-   
-Cloud: {}
-Resource: {}
-Name Prefix: {}
-Terraform:""".format(
-        samples.storage_sample,
-        samples.cosmos_sample,
-        samples.multiple,
-        cloud,
-        resources,
-        prefix,
+""".format(
+        topic
     )
