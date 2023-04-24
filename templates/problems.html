@@ -6,16 +6,21 @@
 </head>
 
 <body>
-  
+
   <div class="container text-center">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/home/">Overview</a>
+      <a class="navbar-brand" href="/">Problems</a>
+    </nav>
     <div class="row mt-3">
-      <h3>AP Physics 1 Exam Review</h3>
+      <h3>AP Physics 1 Problem Generator</h3>
       <form action="/" method="post">
         <input type="text" name="topic" placeholder="Example: Unit 2.3 Contact Forces" required />
         <input type="submit" value="Generate" />
       </form>
     </div>
     <div class="row mt-3">
+    {% if question %}  
     <div class="accordion" id="practiceProblem" >
       <div class="accordion-item">
         <h2 class="accordion-header">
@@ -24,10 +29,8 @@
           </button>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#practiceProblem">
-          <div class="accordion-body">
-            {% if question %}          
+          <div class="accordion-body">         
               {{ question }}
-            {% endif %}
           </div>
         </div>
       </div>
@@ -60,6 +63,7 @@
         </div>
       </div>
     </div>
+    {% endif %}
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
