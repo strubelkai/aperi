@@ -20,6 +20,12 @@
         <h5>Overview </h5>        
         <p>{{ overview }}</p>
       {% endif %}
+      {% if examples %}  
+      <h5>Examples </h5> 
+      <div>
+        {{ examples|safe }}
+      </div>         
+    {% endif %}
     </div>
     
   </div>

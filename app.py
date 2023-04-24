@@ -19,8 +19,16 @@ def unit(unit, section):
         max_tokens=1000,
         temperature=0,
     )
-    generatedText = response.choices[0].text
-    return render_template("unit.html", overview=generatedText, unit=unit, section=section)
+    overview = response.choices[0].text
+    topic = "Write 3 example problems for AP Physics Unit {} Section {} in an html table with solutions".format(unit, section)
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=topic,
+        max_tokens=1000,
+        temperature=0,
+    )
+    examples = response.choices[0].text
+    return render_template("unit.html", overview=overview, unit=unit, section=section, examples=examples)
 
 
 def generatePrompt(topic):
